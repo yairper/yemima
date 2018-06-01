@@ -91,6 +91,9 @@
       }
 
       $(function () {
+        $('#nav-toggle').click(function () {
+          $(this).closest('main').toggleClass('nav-closed')
+        })
         toggleImageByName('yemima')
 
         $('[data-type]').click(function () {
@@ -216,14 +219,40 @@
       body > main > nav {
         position: relative;
         cursor: pointer;
-        width: 500px;
+        width: 520px;
       }
+      body > main.nav-closed > nav {
+        width: 50px;
+      }
+      body > main.nav-closed > nav > div > *:not(img) {
+        display: none;
+      }
+
+      #nav-toggle {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
+      }
+      .nav-closed #nav-toggle {
+        transform: rotate(180deg);
+        left: -70px;
+      }
+
+      body > main.nav-closed > article {
+        right: 120px;
+        width: 860px;
+      }
+
       body > main > article {
-        padding: 10px;
+        margin-right: 10px;
         position: absolute;
         top: 0;
-        right: 500px;
-        width: 420px;
+        right: 520px;
+        width: 430px;
+      }
+      body > main > article > p > img {
+        width: 100%;
       }
 
       [type="checkbox"]:checked { opacity: 0; }
@@ -231,7 +260,7 @@
       [type="checkbox"] + img { position: relative; right: -20px; z-index: -1; }
 
       main > nav > div {
-        padding: 10px 55px 10px 10px;
+        padding: 10px 60px 10px 10px;
         margin-top: 20px;
         border: 1px solid transparent;
         border-width: 0 1px;
@@ -241,7 +270,7 @@
       }
       main > nav > div > img {
         position: absolute;
-        right: 0;
+        right: 8px;
         top: 7px;
       }
 
@@ -288,11 +317,12 @@
   </head>
   <body dir="rtl">
     <header>
-      <img src="./yemima-big.jpg" width="420px" height="350px">
+      <img src="./yemima-big.jpg" width="800px" height="350px">
     </header>
 
     <main>
       <nav>
+        <a id="nav-toggle">►</a>
         <div data-type="yemima">
           <img src="./dj.png" width="48" height="48">
           <span class="type-name">
@@ -375,34 +405,34 @@
 
       <article id="main-text">
         <p data-type="yemima">
-          <img src="./maya-big.jpg" width="420px">
+          <img src="./maya-big.jpg" width="800px">
           בלה בלה נוירוטי...
         </p>
         <p data-type="dj">
-          <img data-type="dj" src="./dj-big.jpg" width="420px">
+          <img data-type="dj" src="./dj-big.jpg" width="800px">
           יאי, יש לנו דיג׳יי
         </p>
         <p data-type="massage">
-          <img src="./massage-big.jpg" width="420px">
+          <img src="./massage-big.jpg" width="800px">
           יאי, יש לנו עיסויים 
         </p>
         <p data-type="distance">
           <img src="https://maps.googleapis.com/maps/api/staticmap?size=420x600&path=color:0x00000000|weight:5|fillcolor:0xFFFF0033|Haifa,+israel|Ashkelon,+israel|Jerusalem,+israel">
         </p>
         <p data-type="photo">
-          <img ="./bar-big.jpg" width="420px">
+          <img ="./bar-big.jpg" width="800px">
         </p>
         <p data-type="workshop">
-          <img src="./workshop-big.jpg" width="420px">
+          <img src="./workshop-big.jpg" width="800px">
         </p>
         <p data-type="sweets">
-          <img src="./sweets-big.jpg" width="420px">
+          <img src="./sweets-big.jpg" width="800px">
         </p>
         <p data-type="design">
-          <img src="./design-big.jpg" width="420px">
+          <img src="./design-big.jpg" width="800px">
         </p>
         <p data-type="bar">
-          <img src="./bar-big.jpg" width="420px">
+          <img src="./bar-big.jpg" width="800px">
         </p>
       </article>
     </main>
