@@ -1,0 +1,391 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+      crossorigin="anonymous">
+    </script>
+
+    <script>
+      var alg = {
+        "10": {
+          dj: {
+            withoutWorkshop: 500
+          },
+          design: 450,
+          massage: 650,
+          sweets: 600,
+          workshop: 1100,
+          bar: {
+            min: 1000,
+            max: 1400
+          },
+          photo: {
+            withoutWorkshop: 500
+          }
+        },
+          
+        "20": {
+          dj: {
+            withoutWorkshop: 800
+          },
+          design: 700,
+          massage: 900,
+          sweets: 800,
+          workshop: 1500,
+          bar: {
+            min: 1300,
+            max: 2300
+          },
+          photo: {
+            withoutWorkshop: 700
+          }
+        },
+
+        "40": {
+          dj: {
+            withoutWorkshop: 1000
+          },
+          design: {
+            min: 900,
+            max: 1200
+          },
+          massage: {
+            min: 1000,
+            max: 1400
+          },
+          sweets: {
+            min: 1000,
+            max: 1500
+          },
+          workshop: {
+            min: 1600,
+            max: 2800
+          },
+          bar: {
+            min: 2500,
+            max: 4000
+          },
+          photo: {
+            withoutWorkshop: {
+              min: 900,
+              max: 1500
+            }
+          }
+        }
+      }
+
+      $(function () {
+        toggleImageByName('yemima')
+
+        $('[data-type]').click(function () {
+          toggleImageByName(this.dataset.type)
+        })
+
+        $('.people').click(function (e) {
+          $('.people').removeClass('people-active')
+          $(this).toggleClass('people-active')
+        })
+
+        $('.price').click(function (e) {
+          e.stopPropagation()
+          $(this).toggleClass('price-active')
+          setPrices()
+        })
+
+        setPrices()
+        $('.people').click(setPrices)
+
+        function setPrices () {
+          var peopleCount = $('.people-active').data('value')
+          var prices = alg[peopleCount]
+          var totalPrice = { min: 0, max: 0 }
+
+          Object.keys(prices).forEach(function (type) {
+            var currentPrice = prices[type]
+            var price = getPrice(currentPrice)
+            setTypePrice(type, price)
+
+            if (price.min) {
+              totalPrice.min += price.min
+              totalPrice.max += price.max
+            }
+            else {
+              totalPrice.min += price
+              totalPrice.max += price
+            }
+          })
+
+          $('#total-price').text(totalPrice.min + '$' + '-' + totalPrice.max + '$')
+        }
+
+        function setTypePrice (type, price) {
+          var $price = $('main > nav > [data-type="'+type+'"] .price')
+
+          $price.text(formatPrice(price))
+        }
+
+        function formatPrice (price) {
+          if (price.min)
+            return 'כ-' + ((price.max - price.min) / 2) + '$'
+          else
+            return price + '$'
+        }
+
+        function getPrice (price) {
+          var result
+
+          if (price.withoutWorkshop)
+            price = price.withoutWorkshop
+
+          if (isWorkshopSelected())
+            result = 0
+          else
+            result = price
+
+          return result
+        }
+
+        function isWorkshopSelected () {
+          return $('[data-type="workshop"] .price-active').length
+        }
+
+        function toggleImageByName (name) {
+          $('.type-active').removeClass('type-active')
+
+          var relatedProperty = '[data-type='+name+']'
+          $(relatedProperty).addClass('type-active')
+        }
+      })
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css@8.0.0/normalize.css">
+
+    <style>
+      html {
+        font-weight: 300;
+        font-size: 42px;
+        color: #444;
+      }
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-weight: 400;
+      }
+      * {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+
+      body > * { max-width: 960px; margin-left: auto; margin-right: auto; }
+
+      h1 { text-align: center; }
+
+      .type-container {
+        text-align: center;
+      }
+
+      body > main {
+        position: relative;
+        margin-top: 50px;
+      }
+      body > main > article {
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        right: 460px;
+        width: 460px;
+      }
+      body > main > nav {
+        position: relative;
+        cursor: pointer;
+        width: 460px;
+      }
+
+      [type="checkbox"]:checked { opacity: 0; }
+      [type="checkbox"]:not(:checked) + img { visibility: hidden; }
+      [type="checkbox"] + img { position: relative; right: -20px; z-index: -1; }
+
+      main > nav > div {
+        padding: 10px 55px 10px 10px;
+        margin-top: 20px;
+        border: 1px solid transparent;
+        border-width: 0 1px;
+        clear: both;
+        position: relative;
+        min-height: 43px;
+      }
+      main > nav > div > img {
+        position: absolute;
+        right: 0;
+        top: 7px;
+      }
+
+      main > nav > div.type-active {
+        background: #fff6e5;
+      }
+
+      nav > div select,
+      nav > div .price {
+        position: absolute;
+        left: 10px;
+      }
+
+      .people, .price { cursor: pointer; color: blue; opacity: 0.2 }
+      .people-active, .price-active { opacity: 0.8 }
+
+      #total-price { left: -90px; }
+      .type-name { display: inline-block; }
+
+      [name="people-number"] {
+        width: 160px;
+      }
+      select {
+        width: 160px;
+      }
+
+      #main-text > p:not(.type-active) {
+        display: none;
+      }
+
+      #people-container {
+        margin-top: 40px;
+      }
+
+      .bar > span {
+        display: inline-block;
+        width: 17%;
+        text-align: center;
+      }
+      .bar > span::after {
+        content: attr(data-value);
+      }
+    </style>
+  </head>
+  <body dir="rtl">
+    <header>
+      <article class="type-container">
+        <img src="./yemima-big.jpg" width="420px" height="350px">
+      </article>
+    </header>
+
+    <main>
+      <nav>
+        <div data-type="yemima">
+          <img src="./dj.png" width="48" height="48">
+          <span class="type-name">
+            עלינו
+          </span>
+        </div>
+        <div id="people-container">
+          <label>מספר אנשים</label>
+          <div class="bar">
+            <span class="people" data-value="10"></span>
+            <span class="people people-active" data-value="20"></span>
+            <span class="people" data-value="40"></span>
+            <span class="people" data-value="70"></span>
+            <span class="people" data-value="100"></span>
+          </div>
+        </div>
+        <div data-type="distance">
+          <span>
+            100 ק״מ מת״א
+          </span>
+          <span class="price">150₪</span>
+        </div>
+        <div data-type="workshop">
+          <img src="./bar-icon.jpeg" width="48" height="48">
+          <span class="type-name">
+            סדנא
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="dj">
+          <img src="./dj.png" width="48" height="48">
+          <span class="type-name">
+            דיג׳י
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="photo">
+          <img src="./photo-icon.png" width="48" height="48">
+          <span class="type-name">
+            צלם
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="massage">
+          <img src="./massage-icon.png" width="48" height="48">
+          <span class="type-name">
+            מסאזי׳ם
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="design">
+          <img src="./design-icon.png" width="48" height="48">
+          <span class="type-name">
+            עיצוב
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="sweets">
+          <img src="./sweets-icon.png" width="48" height="48">
+          <span class="type-name">
+            מתוקים
+          </span>
+          <span class="price"></span>
+        </div>
+        <div data-type="bar">
+          <img src="./bar-icon.png" width="48" height="48">
+          <span class="type-name">
+            בר
+          </span>
+          <span class="price"></span>
+        </div>
+        <div>
+          <span>
+            מחיר מוערך
+          </span>
+          <span class="price" id="total-price">
+          </span>
+        </div>
+      </nav>
+
+      <article id="main-text">
+        <p data-type="yemima">
+          בלה בלה נוירוטי...
+        </p>
+        <p data-type="dj">
+          <img data-type="dj"       src="./dj-big.jpg"       width="480px">
+          יאי, יש לנו דיג׳יי
+        </p>
+        <p data-type="massage">
+          <img data-type="massage"  src="./massage-big.jpg"  width="480px">
+          יאי, יש לנו עיסויים 
+        </p>
+        <p data-type="distance">
+          <img src="https://maps.googleapis.com/maps/api/staticmap?size=480x600&center=32.1,34.8&zoom=9&path=fillcolor:0xAA000033%7Ccolor:0xFFFFFF00%7Cenc:}zswFtikbMjJzZ%7CRdPfZ}DxWvBjWpF~IvJnEvBrMvIvUpGtQpFhOQdKpz@bIx{A%7CPfYlvApz@bl@tcAdTpGpVwQtX}i@%7CGen@lCeAda@bjA%60q@v}@rfAbjA%7CEwBpbAd_@he@hDbu@uIzWcWtZoTdImTdIwu@tDaOXw_@fc@st@~VgQ%7C[uPzNtA%60LlEvHiYyLs^nPhCpG}SzCNwHpz@cEvXg@bWdG%60]lL~MdTmEnCwJ[iJhOae@nCm[%60Aq]qE_pAaNiyBuDurAuB}}Ay%60@%7CEKv_@?%7C[qGji@lAhYyH%60@Xiw@tBerAs@q]jHohAYkSmW?aNoaAbR}LnPqNtMtIbRyRuDef@eT_z@mW_Nm%7CB~j@zC~hAyUyJ_U{Z??cPvg@}s@sHsc@_z@cj@kp@YePoNyYyb@_iAyb@gBw^bOokArcA}GwJuzBre@i\tf@sZnd@oElb@hStW{]vv@??kz@~vAcj@zKa%60Atf@uQj_Aee@pU_UrcA&key=AIzaSyAYjYjjaLuE-VS7QmfvgH5FtlJI0yuzaew">
+        </p>
+        <p data-type="photo">
+          <img data-type="photo"      src="./bar-big.jpg"      width="480px">
+        </p>
+        <p data-type="workshop">
+          <img data-type="workshop" src="./workshop-big.jpg" width="480px">
+        </p>
+        <p data-type="sweets">
+          <img data-type="sweets"   src="./sweets-big.jpg"   width="480px">
+        </p>
+        <p data-type="design">
+          <img data-type="design"   src="./design-big.jpg"   width="480px">
+        </p>
+        <p data-type="bar">
+          <img data-type="bar"      src="./bar-big.jpg"      width="480px">
+
+        </p>
+      </article>
+    </main>
+  </body>
+</html>
