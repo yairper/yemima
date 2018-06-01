@@ -156,11 +156,12 @@
         function getPrice (price) {
           var result
 
-          if (price.withoutWorkshop)
-            price = price.withoutWorkshop
-
-          if (isWorkshopSelected())
-            result = 0
+          if (price.withoutWorkshop) {
+            if (isWorkshopSelected())
+              result = 0
+            else
+              result = price.withoutWorkshop
+          }
           else
             result = price
 
