@@ -108,17 +108,22 @@
             var price = getPrice(currentPrice)
             setTypePrice(type, price)
 
-            if (price.min) {
-              totalPrice.min += price.min
-              totalPrice.max += price.max
-            }
-            else {
-              totalPrice.min += price
-              totalPrice.max += price
+            if (isPriceSelected(type)) {
+              if (price.min) {
+                totalPrice.min += price.min
+                totalPrice.max += price.max
+              }
+              else {
+                totalPrice.min += price
+                totalPrice.max += price
+              }
             }
           })
 
-          $('#total-price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
+          if (totalPrice.min == totalPrice.max)
+            $('#total-price').text(totalPrice.min + '₪')
+          else
+            $('#total-price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
         }
 
         function setTypePrice (type, price) {
@@ -126,6 +131,7 @@
 
           $price.text(formatPrice(price))
         }
+
 
         function formatPrice (price) {
           if (price.min)
@@ -149,7 +155,11 @@
         }
 
         function isWorkshopSelected () {
-          return $('[data-type="workshop"] .price-active').length
+          return isPriceSelected('workshop')
+        }
+
+        function isPriceSelected (type) {
+          return $('[data-type="'+type+'"] .price-active').length
         }
 
         function toggleImageByName (name) {
