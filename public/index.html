@@ -106,9 +106,15 @@
         })
 
         $('.price').click(function (e) {
+          $this = $(this)
           e.stopPropagation()
-          $(this).toggleClass('price-active')
+          $this.toggleClass('price-active')
           setPrices()
+
+          if ($this.parent().data('type') == 'workshop') {
+            var isSelected = $this.hasClass('price-active')
+            $('[data-type="dj"], [data-type="photo"]').toggleClass('price-included', isSelected)
+          }
         })
 
         setPrices()
@@ -210,8 +216,10 @@
       body > * { max-width: 960px; margin-left: auto; margin-right: auto; }
 
       body > header {
+        margin-top: 50px;
         text-align: center;
       }
+
       body > main {
         position: relative;
         margin-top: 50px;
@@ -219,7 +227,7 @@
       body > main > nav {
         position: relative;
         cursor: pointer;
-        width: 520px;
+        width: 540px;
       }
       body > main.nav-closed > nav {
         width: 50px;
@@ -229,13 +237,17 @@
       }
 
       #nav-toggle {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1;
+        margin-top: 17px;
+        cursor: pointer;
+
+        border: solid black;
+        border-width: 0 11px 11px 0;
+        display: inline-block;
+        padding: 17px;
+        transform: rotate(-45deg);
       }
       .nav-closed #nav-toggle {
-        transform: rotate(180deg);
+        transform: rotate(135deg);
         left: -70px;
       }
 
@@ -248,8 +260,11 @@
         margin-right: 10px;
         position: absolute;
         top: 0;
-        right: 520px;
-        width: 430px;
+        right: 550px;
+        width: 400px;
+      }
+      body > main > article > p {
+        margin-top: 20px;
       }
       body > main > article > p > img {
         width: 100%;
@@ -260,18 +275,20 @@
       [type="checkbox"] + img { position: relative; right: -20px; z-index: -1; }
 
       main > nav > div {
-        padding: 10px 60px 10px 10px;
+        padding: 10px;
         margin-top: 20px;
         border: 1px solid transparent;
         border-width: 0 1px;
-        clear: both;
+        min-width: 60px;
         position: relative;
         min-height: 43px;
       }
-      main > nav > div > img {
-        position: absolute;
-        right: 8px;
-        top: 7px;
+      main > nav > .price-included {
+        padding-right: 75px;
+      }
+
+      main > nav > div > * {
+        vertical-align: middle;
       }
 
       main > nav > div.type-active {
@@ -282,12 +299,13 @@
       nav > div .price {
         position: absolute;
         left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
       }
 
       .people, .price { cursor: pointer; color: blue; opacity: 0.2 }
       .people-active, .price-active { opacity: 0.8 }
 
-      #total-price { left: -90px; }
       .type-name { display: inline-block; }
 
       [name="people-number"] {
@@ -317,14 +335,13 @@
   </head>
   <body dir="rtl">
     <header>
-      <img src="./yemima-big.jpg" width="800px" height="350px">
+      <img src="./yemima-big.jpg" width="420px" height="350px">
     </header>
 
     <main>
       <nav>
-        <a id="nav-toggle">►</a>
         <div data-type="yemima">
-          <img src="./dj.png" width="48" height="48">
+          <img src="./dj.png" width="60" height="60">
           <span class="type-name">
             עלינו
           </span>
@@ -346,49 +363,49 @@
           <span class="price">150₪</span>
         </div>
         <div data-type="workshop">
-          <img src="./bar-icon.jpeg" width="48" height="48">
+          <img src="./bar-icon.jpeg" width="60" height="60">
           <span class="type-name">
             סדנאת אלכוהול
           </span>
           <span class="price"></span>
         </div>
         <div data-type="dj">
-          <img src="./dj.png" width="48" height="48">
+          <img src="./dj.png" width="60" height="60">
           <span class="type-name">
             דיג׳י
           </span>
           <span class="price"></span>
         </div>
         <div data-type="photo">
-          <img src="./photo-icon.png" width="48" height="48">
+          <img src="./photo-icon.png" width="60" height="60">
           <span class="type-name">
             צלם
           </span>
           <span class="price"></span>
         </div>
         <div data-type="massage">
-          <img src="./massage-icon.png" width="48" height="48">
+          <img src="./massage-icon.png" width="60" height="60">
           <span class="type-name">
             מסאזי׳ם
           </span>
           <span class="price"></span>
         </div>
         <div data-type="design">
-          <img src="./design-icon.png" width="48" height="48">
+          <img src="./design-icon.png" width="60" height="60">
           <span class="type-name">
             עיצוב
           </span>
           <span class="price"></span>
         </div>
         <div data-type="sweets">
-          <img src="./sweets-icon.png" width="48" height="48">
+          <img src="./sweets-icon.png" width="60" height="60">
           <span class="type-name">
             מתוקים
           </span>
           <span class="price"></span>
         </div>
         <div data-type="bar">
-          <img src="./bar-icon.png" width="48" height="48">
+          <img src="./bar-icon.png" width="60" height="60">
           <span class="type-name">
             בר
           </span>
@@ -404,6 +421,9 @@
       </nav>
 
       <article id="main-text">
+        <div>
+          <a id="nav-toggle"></a>
+        </div>
         <p data-type="yemima">
           <img src="./maya-big.jpg" width="800px">
           בלה בלה נוירוטי...
