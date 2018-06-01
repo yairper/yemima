@@ -118,7 +118,7 @@
             }
           })
 
-          $('#total-price').text(totalPrice.min + '$' + '-' + totalPrice.max + '$')
+          $('#total-price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
         }
 
         function setTypePrice (type, price) {
@@ -129,9 +129,9 @@
 
         function formatPrice (price) {
           if (price.min)
-            return 'כ-' + ((price.max - price.min) / 2) + '$'
+            return 'כ-' + ((price.max - price.min) / 2) + '₪'
           else
-            return price + '$'
+            return price + '₪'
         }
 
         function getPrice (price) {
