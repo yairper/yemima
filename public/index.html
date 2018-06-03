@@ -92,7 +92,7 @@
 
       $(function () {
         $('#nav-toggle').click(function () {
-          $(this).closest('main').toggleClass('nav-closed')
+          $(this).closest('body').toggleClass('nav-closed')
         })
         toggleImageByName('yemima')
 
@@ -200,7 +200,7 @@
       html {
         font-weight: 300;
         font-size: 42px;
-        color: #444;
+        color: #555;
       }
       p {
         margin: 0;
@@ -213,32 +213,59 @@
         -moz-tap-highlight-color: rgba(0, 0, 0, 0);
       }
 
-      body > * { max-width: 960px; margin-left: auto; margin-right: auto; }
-
       body > header {
-        margin-top: 50px;
+        position: fixed;
+        top: 0;
+        width: 960px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        padding: 10px 0;
+        background: #fff;
+        z-index: 2;
+
         text-align: center;
       }
 
-      body > main {
+      main {
         position: relative;
-        margin-top: 50px;
-      }
-      body > main > nav {
-        position: relative;
-        cursor: pointer;
-        width: 540px;
-      }
-      body > main.nav-closed > nav {
-        width: 50px;
-      }
-      body > main.nav-closed > nav > div > *:not(img) {
-        display: none;
+        top: 370px;
+
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      #nav-toggle {
-        margin-top: 17px;
+      main > nav {
+        position: absolute;
+        right: calc(50% - 460px);
+        overflow: hidden;
+
         cursor: pointer;
+      }
+      main > nav > div {
+        width: 520px;
+
+        transition: all 1s;
+      }
+      main > nav > div > *:not(img) {
+        opacity: 1;
+        transition: width .1s 1s;
+      }
+      main > article {
+        position: fixed;
+        top: 370px;
+        right: calc(50% + 100px);
+        width: 370px;
+
+        transition: all 1s;
+      }
+      #nav-toggle {
+        position: absolute;
+        bottom: 20px;
+        right: 40px;
+        cursor: pointer;
+        z-index: 3;
 
         border: solid black;
         border-width: 0 11px 11px 0;
@@ -246,43 +273,65 @@
         padding: 17px;
         transform: rotate(-45deg);
       }
+
+      @media only screen and (orientation: landscape) {
+        /*and (min-device-width: 414px)
+        and (max-device-width: 736px)
+        and (-webkit-min-device-pixel-ratio: 3)*/
+        body > header > img {
+          height: 200px; 
+        }
+        body > header > img[src*="yemima"] {
+          width: 260px;
+        }
+        main {
+          top: 220px;
+        }
+
+        main > article {
+          top: 220px;
+        }
+      }
+
+      main > article > p + p {
+        margin-top: 20px;
+      }
+      main > article > p > img {
+        width: 100%;
+      }
+
       .nav-closed #nav-toggle {
         transform: rotate(135deg);
         margin-right: -13px;
       }
-
-      body > main.nav-closed > article {
-        right: 120px;
-        width: 860px;
+      .nav-closed #main-text {
+        right: calc(50% - 355px);
+        width: 825px;
+        transition: all 1s .3s;
+      }
+      .nav-closed nav > div {
+        width: 60px;
+        height: 60px;
+        transition: all 1s .3s;
+      }
+      .nav-closed nav > div > *:not(img) {
+        opacity: 0;
+        width: 0;
+        transition: all .3s;
       }
 
-      body > main > article {
-        margin-right: 10px;
-        position: absolute;
-        top: 0;
-        right: 550px;
-        width: 400px;
-      }
-      body > main > article > p {
-        margin-top: 20px;
-      }
-      body > main > article > p > img {
-        width: 100%;
-      }
-
-      [type="checkbox"]:checked { opacity: 0; }
-      [type="checkbox"]:not(:checked) + img { visibility: hidden; }
-      [type="checkbox"] + img { position: relative; right: -20px; z-index: -1; }
-
-      main > nav > div {
+      nav > div {
         padding: 10px;
-        margin-top: 20px;
         border: 1px solid transparent;
         border-width: 0 1px;
         min-width: 60px;
         position: relative;
         min-height: 43px;
       }
+      nav > div + div {
+        margin-top: 20px;
+      }
+
       main:not(.nav-closed) > nav > .price-included {
         padding-right: 75px;
       }
@@ -315,7 +364,8 @@
         width: 160px;
       }
 
-      #main-text > p:not(.type-active) {
+      #main-text > p:not(.type-active),
+      header > img:not(.type-active) {
         display: none;
       }
 
@@ -335,7 +385,18 @@
   </head>
   <body dir="rtl">
     <header>
-      <img src="./yemima-big.jpg" width="420px" height="350px">
+      <img data-type="yemima"   src="./yemima-big.jpg"   height="350px" width="420px">
+      <img data-type="photo"    src="./yemima-big.jpg"   height="350px" width="420px">
+      <img data-type="distance" src="./yemima-big.jpg"   height="350px" width="420px">
+
+      <img data-type="bar"      src="./bar-big.jpg"      height="350px">
+      <img data-type="design"   src="./design-big.jpg"   height="350px">
+      <img data-type="sweets"   src="./sweets-big.jpg"   height="350px">
+      <img data-type="workshop" src="./workshop-big.jpg" height="350px">
+      <img data-type="massage"  src="./massage-big.jpg"  height="350px">
+      <img data-type="dj"       src="./dj-big.jpg"       height="350px">
+
+      <a id="nav-toggle"></a>
     </header>
 
     <main>
@@ -357,6 +418,7 @@
           </div>
         </div>
         <div data-type="distance">
+          <img src="./distance.png" width="60" height="60">
           <span>
             100 ק״מ מת״א
           </span>
@@ -421,38 +483,38 @@
       </nav>
 
       <article id="main-text">
-        <div>
-          <a id="nav-toggle"></a>
-        </div>
         <p data-type="yemima">
           <img src="./maya-big.jpg" width="800px">
           בלה בלה נוירוטי...
         </p>
         <p data-type="dj">
-          <img data-type="dj" src="./dj-big.jpg" width="800px">
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
+          יאי, יש לנו דיג׳יי
           יאי, יש לנו דיג׳יי
         </p>
         <p data-type="massage">
-          <img src="./massage-big.jpg" width="800px">
           יאי, יש לנו עיסויים 
         </p>
         <p data-type="distance">
           <img src="https://maps.googleapis.com/maps/api/staticmap?size=420x600&path=color:0x00000000|weight:5|fillcolor:0xFFFF0033|Haifa,+israel|Ashkelon,+israel|Jerusalem,+israel">
         </p>
         <p data-type="photo">
-          <img ="./bar-big.jpg" width="800px">
         </p>
         <p data-type="workshop">
-          <img src="./workshop-big.jpg" width="800px">
         </p>
         <p data-type="sweets">
-          <img src="./sweets-big.jpg" width="800px">
         </p>
         <p data-type="design">
-          <img src="./design-big.jpg" width="800px">
         </p>
         <p data-type="bar">
-          <img src="./bar-big.jpg" width="800px">
         </p>
       </article>
     </main>
