@@ -34,7 +34,6 @@ body > footer {
 body > header {
   top: 0;
 
-  padding: 10px 0;
   background: #fff;
 }
 
@@ -45,7 +44,7 @@ body > footer {
 body > main {
   position: relative;
   top: 0;
-  padding: 420px 2rem 7rem 2rem;
+  padding: 400px 0 7rem;
 
   width: 960px;
   margin-left: auto;

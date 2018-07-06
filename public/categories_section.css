@@ -3,6 +3,7 @@
   display: block;
   clear: both;
 }
+
 .category {
   float: right;
 
@@ -10,11 +11,14 @@
   display: inline-block;
   width: 450px;
   overflow: hidden;
-  margin-top: 30px;
 }
 .category:nth-of-type(2n) {
   margin-right: 60px;
 }
+.category:nth-of-type(n + 3) {
+  margin-top: 30px;
+}
+
 .category:hover {
   cursor: pointer;
 }
