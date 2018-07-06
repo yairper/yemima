@@ -1,0 +1,28 @@
+.info-modal {
+  display: none;
+
+  position: fixed;
+  z-index: 3;
+  bottom: 20px;
+  right: 50%;
+  transform: translateX(50%);
+  width: 900px;
+  height: 900px;
+
+  background: #fff;
+  color: #333;
+
+  border-radius: 5px;
+}
+
+.info-modal > header {
+  font-size: 3rem;
+  padding: .5rem;
+}
+
+.info-modal > main {
+  text-align: center;
+}
+.info-modal h2 {
+  color: #f2bbba;
+}

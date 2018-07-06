@@ -87,4 +87,18 @@ $(function () {
   function isPriceSelected (type) {
     return $('.selected[data-type="'+type+'"]').length
   }
+
+  $('.category-info').click(function (e) {
+    e.stopPropagation()
+
+    var category = this.parentElement.dataset.type
+
+    $('.info-modal').show()
+    $('.info-modal > main[data-type="'+category+'"]').show()
+  })
+
+  $('.info-modal-close').click(function () {
+    $('.info-modal').hide()
+    $('.info-modal > main').hide()
+  })
 })

@@ -42,6 +42,22 @@
   box-sizing: border-box;
   height: 2rem;
 }
+
+.category-info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  background-image: url('./info.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  border: .6rem solid transparent;
+  border-right-width: 0;
+}
+
 .category .price {
   position: absolute;
   width: 100%;
