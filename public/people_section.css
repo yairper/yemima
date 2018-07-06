@@ -11,6 +11,9 @@
   border: 5px solid #DFDFDF;
   border-radius: 50%;
 }
+.people:not(.people-active):hover {
+  cursor: pointer;
+}
 .people + .people {
   margin-right: 1.5rem;
 }
