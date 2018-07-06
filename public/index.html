@@ -208,7 +208,7 @@
 
       .logo {
         position: absolute;
-        top: 30px;
+        top: 50px;
         left: 30px;
         width: 250px;
         height: 250px;
@@ -240,14 +240,20 @@
         padding: 10px 0;
         background: #fff;
       }
-      .call-us {
+
+      .call-us, .whatsapp {
         position: absolute;
-        top: 50px;
         right: 50px;
         padding: 25px;
 
         background-color: #E45954;
         border-radius: 50%;
+      }
+      .call-us {
+        top: 50px;
+      }
+      .whatsapp {
+        top: 250px;
       }
 
       body > footer {
@@ -361,6 +367,9 @@
       <span class="logo"></span>
       <a class="call-us" href="tel:+972523723666">
         <img src="./phone.jpg" width="100px">
+      </a>
+      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=+97252323666">
+        <img src="./whatsapp.png" width="100px">
       </a>
     </header>
 
