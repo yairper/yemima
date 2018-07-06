@@ -1,0 +1,36 @@
+.logo {
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  width: 250px;
+  height: 250px;
+
+  background-color: #f78f8f;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #f78f8f;
+
+  background-image: url('./yemima-big-t.png');
+  background-size: 70% 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.call-us, .whatsapp {
+  position: absolute;
+  right: 50px;
+  padding: 25px;
+
+  background-color: #E45954;
+  border-radius: 50%;
+}
+.call-us {
+  top: 50px;
+}
+.whatsapp {
+  display: none;
+}
+.mobile .whatsapp {
+  display: block;
+  top: 250px;
+}
