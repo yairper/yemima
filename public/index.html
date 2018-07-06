@@ -22,8 +22,11 @@
     </script>
 
     <script>
+      var commonPrice = {
+        distance: 150
+      }
       var alg = {
-        "10": {
+        "10": Object.assign({}, commonPrice, {
           dj: {
             withoutWorkshop: 500
           },
@@ -38,9 +41,9 @@
           photo: {
             withoutWorkshop: 500
           }
-        },
+        }),
           
-        "20": {
+        "20": Object.assign({}, commonPrice, {
           dj: {
             withoutWorkshop: 800
           },
@@ -55,9 +58,9 @@
           photo: {
             withoutWorkshop: 700
           }
-        },
+        }),
 
-        "40": {
+        "40": Object.assign({}, commonPrice, {
           dj: {
             withoutWorkshop: 1000
           },
@@ -87,38 +90,35 @@
               max: 1500
             }
           }
-        }
+        })
       }
+    </script>
 
+    <script>
       $(function () {
-        $('#nav-toggle').click(function () {
-          $(this).closest('body').toggleClass('nav-closed')
-        })
-        toggleImageByName('yemima')
-
-        $('[data-type]').click(function () {
-          toggleImageByName(this.dataset.type)
-        })
-
         $('.people').click(function (e) {
-          $('.people').removeClass('people-active')
-          $(this).toggleClass('people-active')
+          selectPeopleCount(this)
         })
 
-        $('.price').click(function (e) {
+        selectPeopleCount('.people:nth-child(2)')
+
+        function selectPeopleCount (el) {
+          $('.people').removeClass('people-active')
+          $(el).toggleClass('people-active')
+          setPrices()
+        }
+
+        $('.category').click(function (e) {
           $this = $(this)
           e.stopPropagation()
-          $this.toggleClass('price-active')
+          $this.toggleClass('selected')
           setPrices()
 
-          if ($this.parent().data('type') == 'workshop') {
-            var isSelected = $this.hasClass('price-active')
+          if ($this.data('type') == 'workshop') {
+            var isSelected = $this.hasClass('selected')
             $('[data-type="dj"], [data-type="photo"]').toggleClass('price-included', isSelected)
           }
         })
-
-        setPrices()
-        $('.people').click(setPrices)
 
         function setPrices () {
           var peopleCount = $('.people-active').data('value')
@@ -143,13 +143,13 @@
           })
 
           if (totalPrice.min == totalPrice.max)
-            $('#total-price').text(totalPrice.min + '₪')
+            $('.total-price .price').text(totalPrice.min + '₪')
           else
-            $('#total-price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
+            $('.total-price .price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
         }
 
         function setTypePrice (type, price) {
-          var $price = $('main > nav > [data-type="'+type+'"] .price')
+          var $price = $('.category[data-type="'+type+'"] .price')
 
           $price.text(formatPrice(price))
         }
@@ -182,14 +182,7 @@
         }
 
         function isPriceSelected (type) {
-          return $('[data-type="'+type+'"] .price-active').length
-        }
-
-        function toggleImageByName (name) {
-          $('.type-active').removeClass('type-active')
-
-          var relatedProperty = '[data-type='+name+']'
-          $(relatedProperty).addClass('type-active')
+          return $('.selected[data-type="'+type+'"]').length
         }
       })
     </script>
@@ -199,13 +192,13 @@
     <style>
       html {
         font-weight: 300;
-        font-size: 42px;
-        color: #555;
+        font-size: 30px;
+        color: #f2bbba;
       }
       p {
         margin: 0;
       }
-      h1 {
+      h1, h2, h3, h4, h5, h6 {
         font-weight: 400;
       }
       * {
@@ -213,56 +206,57 @@
         -moz-tap-highlight-color: rgba(0, 0, 0, 0);
       }
 
-      body > header {
+      .logo {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 250px;
+        height: 250px;
+
+        background-color: #f78f8f;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px #f78f8f;
+
+        background-image: url('./yemima-big-t.png');
+        background-size: 70% 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .fixed-to-center {
         position: fixed;
-        top: 0;
         width: 960px;
         left: 50%;
         transform: translateX(-50%);
-
-        padding: 10px 0;
-        background: #fff;
         z-index: 2;
 
         text-align: center;
       }
 
+      body > header {
+        top: 0;
+
+        padding: 10px 0;
+        background: #fff;
+      }
+
+      body > footer {
+        bottom: 0;
+      }
+
       main {
         position: relative;
-        top: 370px;
+        top: 0;
+        padding: 420px 2rem 5rem 2rem;
 
         width: 960px;
         margin-left: auto;
         margin-right: auto;
       }
 
-      main > nav {
-        position: absolute;
-        right: calc(50% - 460px);
-        overflow: hidden;
-
-        cursor: pointer;
-      }
-      main > nav > div {
-        width: 520px;
-
-        transition: all 1s;
-      }
-      main > nav > div > *:not(img) {
-        opacity: 1;
-        transition: width .1s 1s;
-      }
-      main > article {
-        position: fixed;
-        top: 370px;
-        bottom: 0;
-        right: calc(50% + 100px);
-        width: 370px;
-        overflow: scroll;
-
-        font-size: .75rem;
-
-        transition: all 1s;
+      main > section {
+        margin-top: 2rem;
       }
       #nav-toggle {
         position: absolute;
@@ -279,29 +273,6 @@
       }
 
       @media only screen and (orientation: landscape) {
-        /*and (min-device-width: 414px)
-        and (max-device-width: 736px)
-        and (-webkit-min-device-pixel-ratio: 3)*/
-        body > header > img {
-          height: 200px; 
-        }
-        body > header > img[src*="yemima"] {
-          width: 260px;
-        }
-        main {
-          top: 220px;
-        }
-
-        main > article {
-          top: 220px;
-        }
-      }
-
-      main > article > p + p {
-        margin-top: 20px;
-      }
-      main > article > p > img {
-        width: 100%;
       }
 
       .nav-closed #nav-toggle {
@@ -336,191 +307,193 @@
         margin-top: 20px;
       }
 
-      main:not(.nav-closed) > nav > .price-included {
-        padding-right: 75px;
-      }
-
-      main > nav > div > * {
-        vertical-align: middle;
-      }
-
       main > nav > div.type-active {
         background: #fff6e5;
       }
 
       nav > div select,
-      nav > div .price {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
+    </style>
 
-      .people, .price { cursor: pointer; color: blue; opacity: 0.2 }
-      .people-active, .price-active { opacity: 0.8 }
+    <style>
+      .people {
+        position: relative;
 
-      .type-name { display: inline-block; }
-
-      [name="people-number"] {
-        width: 160px;
-      }
-      select {
-        width: 160px;
-      }
-
-      #main-text > p:not(.type-active),
-      header > img:not(.type-active) {
-        display: none;
-      }
-
-      #people-container {
-        margin-top: 40px;
-      }
-
-      .bar > span {
         display: inline-block;
-        width: 17%;
+        font-size: 2rem;
+        height: 4.5rem;
+        width: 4.5rem;
         text-align: center;
+
+        color: #000;
+        border: 5px solid #DFDFDF;
+        border-radius: 50%;
       }
-      .bar > span::after {
+      .people + .people {
+        margin-right: 1.5rem;
+      }
+      .people::after {
         content: attr(data-value);
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .people-active {
+        background-color: #EA9492;
+        color: #fff;
       }
     </style>
   </head>
   <body dir="rtl">
-    <header>
-      <img data-type="yemima"   src="./yemima-big.jpg"   height="350px" width="420px">
-      <img data-type="photo"    src="./yemima-big.jpg"   height="350px" width="420px">
-      <img data-type="distance" src="./yemima-big.jpg"   height="350px" width="420px">
-
-      <img data-type="bar"      src="./bar-big.jpg"      height="350px">
-      <img data-type="design"   src="./design-big.jpg"   height="350px">
-      <img data-type="sweets"   src="./sweets-big.jpg"   height="350px">
-      <img data-type="workshop" src="./workshop-big.jpg" height="350px">
-      <img data-type="massage"  src="./massage-big.jpg"  height="350px">
-      <img data-type="dj"       src="./dj-big.jpg"       height="350px">
-
-      <a id="nav-toggle"></a>
+    <header class="fixed-to-center">
+      <img src="./maya-big.jpg" width="600px">
+      <span class="logo"></span>
     </header>
 
     <main>
-      <nav>
-        <div data-type="yemima">
-          <img src="./dj.png" width="60" height="60">
-          <span class="type-name">
-            עלינו
-          </span>
-        </div>
-        <div id="people-container">
-          <label>מספר אנשים</label>
-          <div class="bar">
-            <span class="people" data-value="10"></span>
-            <span class="people people-active" data-value="20"></span>
-            <span class="people" data-value="40"></span>
-            <span class="people" data-value="70"></span>
-            <span class="people" data-value="100"></span>
-          </div>
-        </div>
-        <div data-type="distance">
-          <img src="./distance.png" width="60" height="60">
-          <span>
-            100 ק״מ מת״א
-          </span>
-          <span class="price">150₪</span>
-        </div>
-        <div data-type="workshop">
-          <img src="./bar-icon.jpeg" width="60" height="60">
-          <span class="type-name">
-            סדנאת אלכוהול
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="dj">
-          <img src="./dj.png" width="60" height="60">
-          <span class="type-name">
-            דיג׳י
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="photo">
-          <img src="./photo-icon.png" width="60" height="60">
-          <span class="type-name">
-            צלם
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="massage">
-          <img src="./massage-icon.png" width="60" height="60">
-          <span class="type-name">
-            מסאזי׳ם
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="design">
-          <img src="./design-icon.png" width="60" height="60">
-          <span class="type-name">
-            עיצוב
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="sweets">
-          <img src="./sweets-icon.png" width="60" height="60">
-          <span class="type-name">
-            מתוקים
-          </span>
-          <span class="price"></span>
-        </div>
-        <div data-type="bar">
-          <img src="./bar-icon.png" width="60" height="60">
-          <span class="type-name">
-            בר
-          </span>
-          <span class="price"></span>
-        </div>
+      <section>
+        <h2>מספר אנשים</h2>
         <div>
-          <span>
-            מחיר מוערך
-          </span>
-          <span class="price" id="total-price">
-          </span>
+          <span class="people" data-value="10"></span>
+          <span class="people" data-value="20"></span>
+          <span class="people" data-value="40"></span>
+          <span class="people" data-value="70"></span>
+          <span class="people" data-value="100"></span>
         </div>
-      </nav>
+      </section>
 
-      <article id="main-text">
-        <p data-type="yemima">
-          <img src="./maya-big.jpg" width="800px">
-          בלה בלה נוירוטי...
-        </p>
-        <p data-type="dj">
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-          יאי, יש לנו דיג׳יי
-        </p>
-        <p data-type="massage">
-          יאי, יש לנו עיסויים 
-        </p>
-        <p data-type="distance">
-          <img src="https://maps.googleapis.com/maps/api/staticmap?size=420x600&path=color:0x00000000|weight:5|fillcolor:0xFFFF0033|Haifa,+israel|Ashkelon,+israel|Jerusalem,+israel">
-        </p>
-        <p data-type="photo">
-        </p>
-        <p data-type="workshop">
-        </p>
-        <p data-type="sweets">
-        </p>
-        <p data-type="design">
-        </p>
-        <p data-type="bar">
-        </p>
-      </article>
+      <style>
+        .category {
+          position: relative;
+          display: inline-block;
+          width: 450px;
+          overflow: hidden;
+        }
+        .category:hover {
+          cursor: pointer;
+        }
+        .category h2 {
+          margin: 1rem 0;
+        }
+        .category::after {
+          content: '';
+          position: absolute;
+          top: 4rem;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          border: 5px solid transparent;
+        }
+        .category.selected::after {
+          border-color: #EA9492;
+        }
+        .category h2 {
+          text-align: center;
+          box-sizing: border-box;
+          height: 2rem;
+        }
+        .category .price {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          right: 0;
+
+          background-color: rgba(255, 255, 255, 0.8);
+          color: #000;
+
+          text-align: center;
+          font-size: 1.5rem;
+          line-height: 3rem;
+        }
+        .category:nth-of-type(2n) {
+          margin-right: 1rem;
+        }
+
+        .category.selected .price {
+          background-color: #EA9492;
+          color: #FDF5F5;
+        }
+      </style>
+      <section>
+        <div class="category" data-type="distance">
+          <h2>
+            100 ק״מ מת״א
+          </h2>
+          <img src="https://maps.googleapis.com/maps/api/staticmap?size=450x350&path=color:0x00000000|weight:5|fillcolor:0xFFFF0033|Haifa,+israel|Ashkelon,+israel|Jerusalem,+israel">
+          <div class="price"></div>
+        </div>
+        <div class="category" data-type="workshop">
+          <h2>
+            סדנאת אלכוהול
+          </h2>
+          <img data-type="workshop" src="./workshop-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="dj">
+          <h2>
+            דיג׳י
+          </h2>
+          <img data-type="dj" src="./dj-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="photo">
+          <h2>
+            צלם
+          </h2>
+          <img data-type="photo" src="./yemima-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="massage">
+          <h2 class="type-name">
+            מסאזי׳ם
+          </h2>
+          <img data-type="massage" src="./massage-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="design">
+          <h2 class="type-name">
+            עיצוב
+          </h2>
+          <img data-type="design" src="./design-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="sweets">
+          <h2>
+            מתוקים
+          </h2>
+          <img data-type="sweets" src="./sweets-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+        <div class="category" data-type="bar">
+          <h2>
+            בר
+          </h2>
+          <img data-type="bar" src="./bar-big.jpg" height="350px">
+          <span class="price"></span>
+        </div>
+      </section>
+
+      <style>
+        .total-price {
+          background-color: #E45954;
+          color: #fff;
+          text-align: center;
+          font-size: 2rem;
+          line-height: 4rem;
+        }
+      </style>
     </main>
+
+    <footer class="fixed-to-center">
+      <div class="total-price">
+        <span>
+          מחיר מוערך
+        </span>
+        <span class="price">
+        </span>
+      </div>
+    </footer>
   </body>
 </html>
