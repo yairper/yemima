@@ -61,17 +61,22 @@ $(function () {
     var $price = $('.category[data-type="'+type+'"] .price')
     var newPriceText = formatPrice(price)
 
+    var COLOR_TRANSITION_MS = 300
+
     if ($price.text() != newPriceText) {
-      $price.addClass('animate-out')
+      $price.css({
+        'transition': 'color '+COLOR_TRANSITION_MS+'ms',
+        'color': 'transparent'
+      })
 
       setTimeout(function () {
         $price.text(newPriceText)
-        $price.toggleClass('animate-out', 'animate-in')
+        $price.css('color', '')
 
         setTimeout(function () {
-          $price.removeClass('animate-in')
-        }, 200)
-      }, 200)
+          $price.css('transition', '')
+        }, COLOR_TRANSITION_MS)
+      }, COLOR_TRANSITION_MS)
     }
   }
 
