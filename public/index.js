@@ -61,20 +61,26 @@ $(function () {
     var $price = $('.category[data-type="'+type+'"] .price')
     var newPriceText = formatPrice(price)
 
-    var COLOR_TRANSITION_MS = 300
+    var COLOR_TRANSITION_MS = 200
 
     if ($price.text() != newPriceText) {
       $price.css({
-        'transition': 'color '+COLOR_TRANSITION_MS+'ms',
+        'transition': 'color '+COLOR_TRANSITION_MS+'ms ease-in',
         'color': 'transparent'
       })
 
       setTimeout(function () {
         $price.text(newPriceText)
-        $price.css('color', '')
+        $price.css({
+          'transition-timing-function': 'ease-out',
+          'color': ''
+        })
 
         setTimeout(function () {
-          $price.css('transition', '')
+          $price.css({
+            'transition': '',
+            'transition-timing-function': ''
+          })
         }, COLOR_TRANSITION_MS)
       }, COLOR_TRANSITION_MS)
     }
