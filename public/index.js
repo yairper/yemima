@@ -12,7 +12,7 @@ $(function () {
   }
 
   $('.category').click(function (e) {
-    $this = $(this)
+    var $this = $(this)
     e.stopPropagation()
     $this.toggleClass('selected')
     setPrices()
@@ -45,10 +45,16 @@ $(function () {
       }
     })
 
-    if (totalPrice.min == totalPrice.max)
-      $('.total-price .price').text(totalPrice.min + '₪')
-    else
-      $('.total-price .price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
+    if (totalPrice.max == 0)
+      $('.total-price').hide()
+    else {
+      $('.total-price').show()
+
+      if (totalPrice.min == totalPrice.max)
+        $('.total-price .price').text(totalPrice.min + '₪')
+      else
+        $('.total-price .price').text(totalPrice.min + '₪' + '-' + totalPrice.max + '₪')
+    }
   }
 
   function setTypePrice (type, price) {
