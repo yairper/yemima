@@ -59,10 +59,21 @@ $(function () {
 
   function setTypePrice (type, price) {
     var $price = $('.category[data-type="'+type+'"] .price')
+    var newPriceText = formatPrice(price)
 
-    $price.text(formatPrice(price))
+    if ($price.text() != newPriceText) {
+      $price.addClass('animate-out')
+
+      setTimeout(function () {
+        $price.text(newPriceText)
+        $price.toggleClass('animate-out', 'animate-in')
+
+        setTimeout(function () {
+          $price.removeClass('animate-in')
+        }, 200)
+      }, 200)
+    }
   }
-
 
   function formatPrice (price) {
     if (price.min)

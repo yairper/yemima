@@ -76,3 +76,11 @@
   background-color: #EA9492;
   color: #FDF5F5;
 }
+
+.category .price.animate-out {
+  color: transparent;
+  transition: color .2s;
+}
+.category .price.animate-in {
+  transition: color .2s;
+}
