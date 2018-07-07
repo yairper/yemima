@@ -3,8 +3,8 @@
 
   display: inline-block;
   font-size: 2rem;
-  height: 4.5rem;
-  width: 4.5rem;
+  height: 4rem;
+  width: 4rem;
   text-align: center;
 
   color: #000;
@@ -15,7 +15,7 @@
   cursor: pointer;
 }
 .people + .people {
-  margin-right: 1.5rem;
+  margin-right: 2rem;
 }
 .people::after {
   content: attr(data-value);

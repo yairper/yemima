@@ -3,7 +3,7 @@ html {
   font-size: 16px;
   color: #f2bbba;
 }
-html.mobile {
+html.mobile.portrait {
   font-size: 30px;
 }
 
@@ -33,8 +33,13 @@ body > footer {
 
 body > header {
   top: 0;
+  height: 320px;
+  overflow: hidden;
 
   background: #fff;
+}
+.mobile.portrait body > header {
+  height: 350px;
 }
 
 body > footer {
@@ -44,11 +49,14 @@ body > footer {
 body > main {
   position: relative;
   top: 0;
-  padding: 400px 0 7rem;
+  padding: 320px 0 7rem;
 
   width: 960px;
   margin-left: auto;
   margin-right: auto;
+}
+.mobile.portrait body > main {
+  padding-top: 350px;
 }
 
 body > main > section {
